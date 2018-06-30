@@ -33,7 +33,7 @@ fetch(current_url+'currencies')
 });
 
 
-function convert(){
+function convertion(){
     let currentCurrency = document.getElementById("baseCurrency").value;
     let destinationCurrency = document.getElementById("toCurrency").value;
     let value = document.getElementById("value").value;
@@ -44,6 +44,6 @@ function convert(){
     .then(response => {
         return response.json();
     }).then(response => {
-        document.getElementById("displayPoint").innerHTML = value * response[query].val ;
+        document.getElementById("displayPoint").innerHTML = value * response[query].val 
     })
 }
