@@ -17,27 +17,22 @@
             <div class="col-sm-4">.</div>
             <div class="col-sm-4 jumbotron vertical-center" style="height:40%; width: 40%;margin-top:9%; ">
                     <h1 class="text-center">Converter</h1>
-                        <form action="/action_page.php">
+                        <form>
                             
                                 <label for="from">From:</label>
-                                <input type="number" id="from" placeholder="enter amount" name="amount" >
-                                <select class="form-control" id="sel1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <input type="number" id="value" placeholder="enter amount" name="amount" >
+                                <select class="form-control" id="baseCurrency">
                                   </select>
                                 <br>
                                 <label for="to">To:</label>
-                                <select class="form-control" id="sel2">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <select class="form-control" id="toCurrency">
                                   </select>
                              <br>
-                            <button type="submit" class="btn btn-primary">Convert</button>
+                            
+                            <button type="submit" class="btn btn-primary" onclick="convert()" >Convert</button>
                         </form> 
+                        <div class="display-box" id="displayPoint" style="float:right;">dfds</div>
+                        
             </div>
             <div class="col-sm-4">..</div>
         </div>
@@ -48,7 +43,7 @@
 
         <script src="js/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
 
 </body>
 </html>

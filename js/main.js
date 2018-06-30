@@ -9,24 +9,41 @@ if('serviceWorker' in navigator){
 }
 
 //
-const currency_url = "https://free.currencyconverterapi.com/api/v5/currencies";
+const current_url = "https://free.currencyconverterapi.com/api/v5/";
 
-fetch(currency_url).then(response =>{
-    if (response.status !== 200){
-        console.log("wrong request" +  response.status);
-        return;
-    }
-    
-    response.json().then(currencyNames =>{
-        console.log(currencyNames);
-        let from_currency = document.getElementById('sel1');
-        let to_currency = document.getElementById('sel2');
-        for (const currency in currencyNames){
-            for (const id in currencyNames[currency]){
-                from_currency.innerHTML += "<option value = '${currencyNames[currency][id].id}'> ${currencyNames[currency][id].id} "
-                to_currency.innerHTML += "<option value = '${currencyNames[currency][id].id}'> ${currencyNames[currency][id].id} "
 
-            }
-        }
-    })
+fetch(current_url+'currencies')
+.then(response => {
+    return response.json();
 })
+.then(data => {
+    for (let currency of Object.keys(data.results)){
+        document.getElementById("baseCurrency").innerHTML += 
+                                        "<option value=\""+data.results[currency].id+"\">"+
+                                                data.results[currency].currencyName+" ("+
+                                                data.results[currency].currencySymbol+") "
+                                        "</option>";
+
+        document.getElementById("toCurrency").innerHTML += 
+                                        "<option value=\""+data.results[currency].id+"\">"+
+                                                    data.results[currency].currencyName+" ("+
+                                                    data.results[currency].currencySymbol+") "
+                                        "</option>";
+    }
+});
+
+
+function convert(){
+    let currentCurrency = document.getElementById("baseCurrency").value;
+    let destinationCurrency = document.getElementById("toCurrency").value;
+    let value = document.getElementById("value").value;
+
+    let query = currentCurrency+"_"+destinationCurrency
+
+    fetch(baseUrl+'convert?q='+query+'&compact=y&')
+    .then(response => {
+        return response.json();
+    }).then(response => {
+        document.getElementById("displayPoint").innerHTML = value * response[query].val ;
+    })
+}
