@@ -1,7 +1,54 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title></title>
+    <title>currency converter</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    
 </head>
+<body>
+    
 
-<body>is this the beginning of the end????</body>
+    <div class="container-fluid">
+        <h1 class="text-white text-center">CURRENCY CONVERTER</h1>
+        <div class="row">
+            <div class="col-sm-4">.</div>
+            <div class="col-sm-4 jumbotron vertical-center" style="height:40%; width: 40%;margin-top:9%; ">
+                    <h1 class="text-center">Converter</h1>
+                        <form action="/action_page.php">
+                            
+                                <label for="from">From:</label>
+                                <input type="number" id="from" placeholder="enter amount" name="amount" >
+                                <select class="form-control" id="sel1">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                                <br>
+                                <label for="to">To:</label>
+                                <select class="form-control" id="sel2">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                             <br>
+                            <button type="submit" class="btn btn-primary">Convert</button>
+                        </form> 
+            </div>
+            <div class="col-sm-4">..</div>
+        </div>
+    </div>
+
+
+
+
+        <script src="js/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+</body>
 </html>
