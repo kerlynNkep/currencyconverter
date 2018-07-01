@@ -3,7 +3,6 @@ class Converter {
         this.init()
         this.dbPromise = this.openDatabase();
         this.getAllCurrencies();
-        this.getCurrencyRateFromCache();
     }
 
     init() {
@@ -89,6 +88,7 @@ class Converter {
     }
     
     getCurrencyRateFromCache(fromCurrency, toCurrency) {
+       console.log("fetching form cahce...")
        return this.dbPromise.then(db => {
             if (!db) return;
 
@@ -101,9 +101,24 @@ class Converter {
                    const currencyRate  = RateObj.rate;
                     return {currencyRate, appStatus: 'offline'}; // return the currency rate value
          }).catch(error => {
-             console.log('Sorry! No rate was found in the cache:');
-             this.postToHTMLPage('','No rate was found in the cache');
-             return error;
+             console.log('Sorry! No rate was found in the cache:', error);
+             return null;
+        });
+    }
+
+    getConversionRate(fromCurrency, toCurrency) {
+        fromCurrency = encodeURIComponent(fromCurrency);
+        toCurrency = encodeURIComponent(toCurrency);
+        let query = fromCurrency + '_' + toCurrency;
+
+        return fetch('https://free.currencyconverterapi.com/api/v5/convert?q='+ query + '&compact=ultra').then(response => {
+            return response.json();
+        }).then(response => {
+            const currencyRate = response[Object.keys(response)]; // get the conversion rate 
+            return  {currencyRate, appStatus: 'online'};
+        }).catch(error => {
+            const currencyRate = this.getCurrencyRateFromCache(fromCurrency, toCurrency);
+            return  currencyRate;
         });
     }
     
@@ -151,62 +166,4 @@ class Converter {
             this.showCachedCurrencies(); // get currencies from cache since user is offline.
         });
     }
-
-    //Method that cache conversion rate
-    addCurrencyRateToCache(rate, fromCurrency, toCurrency) {
-        this.dbPromise.then(db => {
-            if (!db) return;
-            
-            let tx = db.transaction('currencyRates', 'readwrite'); // create a transaction 
-            let store = tx.objectStore('currencyRates'); // access currency rate object stores
-
-            let query = `${fromCurrency}_${toCurrency}`;
-            // add the new entry or replace old entry with new one
-            store.put({ query, rate });
-
-            // limit store to 50 items
-           store.index('query').openCursor(null, "prev").then(cursor => {
-                return cursor.advance(50);
-            }).then(function deleteRest(cursor){
-                if (!cursor) return;
-                cursor.delete();
-                return cursor.continue().then(deleteRest);
-            });
-        }).then(() => {
-            console.log('Currency rate for ' + fromCurrency + ' and ' + toCurrency + ' added to cache');
-         }).catch(error => console.log('Something went wrong: '+ error));
-    }
-    
-    addAllCurrencyRate(){
-        
-        for (currency in currencies){
-            this.addAllCurrencyRate()
-        }
-    }
 } 
-
-
-let converter = new Converter()
-converter.getAllCurrencies()
-converter.showCachedCurrencies()
-converter.addCurrencyRateToCache()
-converter.getCurrencyRateFromCache()
-
-
-baseUrl = "https://free.currencyconverterapi.com/api/v5/";
-
-
-function convert(){
-    let currentCurrency = document.getElementById("currentCurrencyList").value;
-    let destinationCurrency = document.getElementById("destinationCurrencyList").value;
-    let value = document.getElementById("value").value;
-
-    let query = currentCurrency+"_"+destinationCurrency
-
-    fetch(baseUrl+'convert?q='+query+'&compact=y&')
-    .then(response => {
-        return response.json();
-    }).then(response => {
-        document.getElementById("displayValue").innerHTML = value * response[query].val
-    })
-}
