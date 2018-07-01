@@ -5,13 +5,19 @@ self.addEventListener( "install" , function (event) {
                 console.log('Caching app shell...');
                 return cache.addAll(
                     [
-
+                        "/",
                         "/index.html",
-                	    "/service-worker.js",
-               	 	    "/js/jquery.min.js",
-                	    "/css/bootstrap.css",
-                	    "/css/main.css",
+                        "/css/bootstrap.min.css",
+                        "/css/bootstrap.min.css.map",
+                        "/css/main.css",
+                        "/js/jquery.min.js",
+                        "/js/bootstrap.js",
+                        "/js/bootstrap.min.js",
+                        "/js/bootstrap.js.map",
+                        "/js/bootstrap.min.js.map",
+                        "/js/main.js",
                         "/js/converter.js",
+                        "/js/idb.js",
                         "/images/images.png"
                     ]
                 );
