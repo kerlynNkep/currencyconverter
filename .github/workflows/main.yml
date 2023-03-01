@@ -1,0 +1,13 @@
+- name: OWASP ZAP Full Scan
+  uses: zaproxy/action-full-scan@v0.4.0
+  with:
+    # GitHub Token to create issues in the repository
+    token: # optional, default is ${{ github.token }}
+    # Target URL
+    target: "kerlynNkep.github.io"
+    # Relative path of the ZAP configuration file
+    rules_file_name: # optional
+    # The Docker file to be executed
+    docker_name: # default is owasp/zap2docker-stable
+    # Additional command line options
+
