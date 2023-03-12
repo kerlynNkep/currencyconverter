@@ -1,0 +1,24 @@
+name: Currency-Converter-Zap-Scan   #Job name
+on:
+  push:                             #Job runs on the master branch
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: OWASP ZAP Baseline Scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2                      #checkout the repository
+        with:
+          ref: master                                  #branch 
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}          #GitHub's default action token 
+          docker_name: 'owasp/zap2docker-stable'      #The name of the docker file to be executed. By default the action runs the stable version of ZAP. 
+          target: 'https://kerlynnkep.github.io'      # The URL of the web application to be scanned
+          rules_file_name: '.zap/rules.tsv'           #specify a relative path to the rules file to ignore any alerts from the ZAP scan. 
+          cmd_options: '-a'                           #Additional command lines options for the baseline script
